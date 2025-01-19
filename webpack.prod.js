@@ -1,7 +1,9 @@
+// webpack.prod.js
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
   mode: 'production',
@@ -25,7 +27,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.json', '.wasm'], // هنا تضيفها
+    extensions: ['.js', '.json', '.wasm'],
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -35,5 +37,10 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'main.css',
     }),
+    new WorkboxWebpackPlugin.GenerateSW({
+      clientsClaim: true,
+      skipWaiting: true,
+    }),
   ],
+  devtool: 'source-map',
 };

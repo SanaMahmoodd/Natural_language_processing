@@ -1,34 +1,32 @@
+// webpack.config.js
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-
+const webpack = require('webpack');
 const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
-  mode: isProduction ? 'production' : 'development',  // تحديد وضع Webpack حسب البيئة
-  entry: path.resolve(__dirname, 'src/client/js/app.js'),  // تحديد المسار للملف الرئيسي
+  mode: isProduction ? 'production' : 'development',
+  entry: path.resolve(__dirname, 'src/client/js/app.js'),
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
-  },
-  devServer: {
-    static: './dist',  // خدمة الملفات من المجلد dist
   },
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: 'babel-loader',  // استخدام Babel لتحويل الأكواد
+        use: 'babel-loader',
       },
       {
         test: /\.scss$/,
         use: [
-          isProduction ? MiniCssExtractPlugin.loader : 'style-loader',  // تحديد طريقة تحميل CSS حسب البيئة
+          isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
           'css-loader',
-          'sass-loader',  // تحويل SCSS إلى CSS
+          'sass-loader',
         ],
       },
     ],
@@ -38,11 +36,14 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/client/views/index.html',  // تحديد قالب الـ HTML
+      template: './src/client/views/index.html',
     }),
     new MiniCssExtractPlugin({
-      filename: 'main.css',  // اسم ملف CSS النهائي
+      filename: 'main.css',
     }),
-    ...(isProduction ? [new CleanWebpackPlugin()] : []),  // تنظيف المجلد dist فقط في وضع الإنتاج
+    ...(isProduction ? [new CleanWebpackPlugin()] : []),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'development'),
+    }),
   ],
 };

@@ -1,3 +1,4 @@
+// webpack.dev.js
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -12,6 +13,9 @@ module.exports = {
   },
   devServer: {
     static: './dist',
+    hot: true,
+    open: true,
+    port: 3001,
   },
   module: {
     rules: [
@@ -27,14 +31,15 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.json', '.wasm'], // هنا تضيفها
+    extensions: ['.js', '.json', '.wasm'],
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/client/views/index.html',
     }),
     new MiniCssExtractPlugin({
-      filename: 'main.css', 
+      filename: 'main.css',
     }),
   ],
+  devtool: 'inline-source-map',
 };
