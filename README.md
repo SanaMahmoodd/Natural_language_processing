@@ -1,4 +1,4 @@
-#Natural Language Processing Project
+# Natural Language Processing Project
 
 This project aims to evaluate a news article using Natural Language Processing (NLP) techniques. It allows users to input a news article URL and retrieve results based on NLP analysis.
 
